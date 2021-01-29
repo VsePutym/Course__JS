@@ -6,7 +6,7 @@ let income = 'freelance';
 
 let addExpenses = 'Cat, Shope, Store, Taxi, Education';
 
-const deposit = 10000;
+let deposit = 10000;
 
 const mission = 1000000;
 
@@ -14,10 +14,10 @@ const period = 12;
 
 let budgetDay = null;
 
-const manth = 30;
+const month = 30;
 
 
-budgetDay = money / manth;
+budgetDay = money / month;
 
 
 console.log(typeof money);
@@ -26,6 +26,5 @@ console.log(typeof deposit);
 console.log(addExpenses.length);
 console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей');
-console.log(addExpenses.toLowerCase());
-console.log(addExpenses.split(', '));
+console.log(addExpenses.toLowerCase().split(', '));
 console.log(budgetDay);
