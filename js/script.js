@@ -8,13 +8,13 @@ let addExpenses = 'Cat, Shope, Store, Taxi, Education';
 
 let deposit = 10000;
 
-const mission = 1000000;
+let mission = 1000000;
 
-const period = 12;
+let period = 12;
 
 let budgetDay = null;
 
-const month = 30;
+let month = 30;
 
 
 budgetDay = money / month;
