@@ -23,14 +23,14 @@ console.log('Purpose to earn ' + mission + ' rubles');
 console.log(addExpenses.toLowerCase().split(', '));
 console.log(typeof deposit);
 console.log('your monthly budget ' + budgetMonth);
-console.log('budget target achieved in ' + (Math.ceil(budgetMonth * period / mission) +  ' months'));
+console.log('budget target achieved in ' + (Math.ceil(mission / budgetMonth) +  ' months'));
 console.log('budget for the day ' + (Math.floor(budgetDay)));
 
-    if( budgetDay > 1200){
+    if( budgetDay >= 1200){
         alert('you have a high income level');
-    }else if( budgetDay > 600 && budgetDay < 1200){
+    }else if( budgetDay >= 600 && budgetDay <= 1200){
         alert('You have an average income');
-    }else if( budgetDay < 600 && budgetDay > 0){
+    }else if( budgetDay <= 600 && budgetDay >= 0){
         alert('Unfortunately your income is below average');
     }else if( budgetDay <= 0 ){
         alert('Something went wrong');
