@@ -1,44 +1,75 @@
 'use strict';
 
-let money = +prompt('your monthly income?', 70000);
+let isNumber = function(n){
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+let money;
 let income = 'freelance';
 let addExpenses = prompt('List the possible expenses for the calculated period, separated by commas', );
 let deposit = confirm('Do you have a bank deposit?');
 let mission = 250000;
 let period = 10;
 let dayInMonth = 30;
-let expenses1 = prompt('Enter the required expense item', 'Transport');
-let amount1 = +prompt('How much will it cost?', 2500);
-let expenses2 = prompt('Enter the required expense item', 'Food');
-let amount2 = +prompt('How much will it cost?', 13000);
+let expenses = [];
 let accumulatedMonth;
 
 addExpenses = addExpenses.split(',');
 
-function getExpensesMonth(a, b){
-    return a + b;
-}
-getExpensesMonth(amount1, amount2);
+let start = function(){
+    do{
+        money = +prompt('your monthly income?');
+    }while (!isNumber(money));
+};
+
+start();
+
+let getExpensesMonth = function(){
+    let cost;
+    let sum = 0;
+    for(let i = 0; i < 2; i++ ){
+        expenses[i] = prompt('Enter the required expense item');
+        do{
+            cost = +prompt('How much will it cost?');
+        }while(!isNumber(cost));
+        sum += +cost;
+    }
+    console.log(expenses);
+    return sum;
+};
+
+let expensesAmount = getExpensesMonth();
 
 function getAccumulatedMonth(a, b){
     return a - b;
 }
-accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(amount1, amount2));
+accumulatedMonth = getAccumulatedMonth(money, expensesAmount);
 
 let budgetDay = accumulatedMonth / dayInMonth;
 
 function getTargetMonth(arg1, arg2){
     return arg1 / arg2;
 }
-getTargetMonth(mission, accumulatedMonth);
+let targetMonth = getTargetMonth(mission, accumulatedMonth);
+
+
 
 function showTypeOf(data){
     console.log(data, typeof(data));
 }
 
-showTypeOf('your monthly expenses ' + getExpensesMonth(amount1, amount2));
+function targetAchieved(){
+    if(targetMonth < 0){
+        console.log(('The goal will not be achieved'));
+    }else{
+        console.log('budget target achieved in ' + Math.ceil(targetMonth));
+    }
+}
+
+
+showTypeOf('your monthly expenses ' + expensesAmount);
 showTypeOf('your possible expenses ' + addExpenses);
-showTypeOf('budget target achieved in ' + Math.ceil(getTargetMonth(mission, accumulatedMonth)));
+showTypeOf(targetAchieved());
 showTypeOf('budget for the day ' + Math.floor(budgetDay));
 
 
