@@ -18,11 +18,12 @@ addExpenses = addExpenses.split(',');
 
 let start = function(){
     do{
-        money = +prompt('your monthly income?');
+        money = prompt('your monthly income?');
     }while (!isNumber(money));
 };
 
 start();
+
 
 let getExpensesMonth = function(){
     let cost;
@@ -30,7 +31,7 @@ let getExpensesMonth = function(){
     for(let i = 0; i < 2; i++ ){
         expenses[i] = prompt('Enter the required expense item');
         do{
-            cost = +prompt('How much will it cost?');
+            cost = prompt('How much will it cost?');
         }while(!isNumber(cost));
         sum += +cost;
     }
@@ -65,7 +66,6 @@ function targetAchieved(){
         console.log('budget target achieved in ' + Math.ceil(targetMonth));
     }
 }
-
 
 showTypeOf('your monthly expenses ' + expensesAmount);
 showTypeOf('your possible expenses ' + addExpenses);
