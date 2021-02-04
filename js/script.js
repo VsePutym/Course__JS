@@ -14,37 +14,37 @@ let dayInMonth = 30;
 let expenses = [];
 let accumulatedMonth;
 
-addExpenses = addExpenses.split(',');
-
-let start = function(){
-    do{
-        money = prompt('your monthly income?');
-    }while (!isNumber(money));
-};
-
-start();
 
 
-let getExpensesMonth = function(){
-    let cost;
-    let sum = 0;
-    for(let i = 0; i < 2; i++ ){
-        expenses[i] = prompt('Enter the required expense item');
-        do{
-            cost = prompt('How much will it cost?');
-        }while(!isNumber(cost));
-        sum += +cost;
-    }
-    console.log(expenses);
-    return sum;
-};
+// let start = function(){
+//     do{
+//         money = prompt('your monthly income?');
+//     }while (!isNumber(money));
+// };
 
-let expensesAmount = getExpensesMonth();
+// start();
+
+
+// let getExpensesMonth = function(){
+//     let cost;
+//     let sum = 0;
+//     for(let i = 0; i < 2; i++ ){
+//         expenses[i] = prompt('Enter the required expense item');
+//         do{
+//             cost = prompt('How much will it cost?');
+//         }while(!isNumber(cost));
+//         sum += +cost;
+//     }
+//     console.log(expenses);
+//     return sum;
+// };
+
+// let expensesAmount = getExpensesMonth();
 
 function getAccumulatedMonth(a, b){
     return a - b;
 }
-accumulatedMonth = getAccumulatedMonth(money, expensesAmount);
+// accumulatedMonth = getAccumulatedMonth(money, expensesAmount);
 
 let budgetDay = accumulatedMonth / dayInMonth;
 
@@ -67,9 +67,8 @@ function targetAchieved(){
     }
 }
 
-showTypeOf('your monthly expenses ' + expensesAmount);
-showTypeOf('your possible expenses ' + addExpenses);
-showTypeOf(targetAchieved());
+// showTypeOf('your monthly expenses ' + expensesAmount);
+showTypeOf('your possible expenses ' + addExpenses.toLowerCase().split(','));
 showTypeOf('budget for the day ' + Math.floor(budgetDay));
 
 
@@ -85,5 +84,5 @@ let getStatusIncome = function(){
     }
 };
 
-getStatusIncome();
+
 console.log(getStatusIncome());
