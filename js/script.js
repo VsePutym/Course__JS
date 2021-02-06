@@ -44,12 +44,10 @@ let appData = {
         }
     },
     getExpensesMonth: function () { //? сумирует обязательные расходы
-        let sum = 0;
         for (let key in appData.expenses) {
-            sum += appData.expenses[key];
-            appData.expensesMonth = sum;
+            appData.expensesMonth += appData.expenses[key];
         }
-        return sum;
+        return appData.expensesMonth;
     },
 
 
@@ -58,9 +56,9 @@ let appData = {
         return appData.budgetMonth;
 
     },
-    getTargetMonth: function (a, b, c, d) { //! за сколько накопим
-        appData.budgetDay = a / b;
-        appData.targetMonth = c / d;
+    getTargetMonth: function ( getBudgetDayArg1, getBudgetDayArg2, getTargetMonthArg1, getTargetMonthArg2) { //! за сколько накопим
+        appData.budgetDay = getBudgetDayArg1 / getBudgetDayArg2;
+        appData.targetMonth = getTargetMonthArg1 / getTargetMonthArg2;
         return appData.budgetDay, appData.targetMonth;
     },
     getStatusIncome: function () {
@@ -84,32 +82,12 @@ let appData = {
         }
     }
 };
-
-// let getExpensesMonth = function () { //? сумирует обязательные расходы
-
-// };
-
 appData.asking();
-
-// appData.getExpensesMonth();
+appData.getExpensesMonth();
 appData.getBudget();
-appData.getTargetMonth();
 appData.getStatusIncome();
 appData.getTargetMonth(appData.budgetMonth, appData.dayInMonth, appData.mission, appData.budgetMonth);
 appData.targetAchieved();
 for (let key in appData) {
     console.log('key:' + key + ' значение:' +  appData[key]); 
 }
-// 9) getAccumulatedMonth переименовать в getBudget. Этот метод будет высчитывать значения свойств budgetMonth и budgetDay, чтобы вычислить значения используем только свойства объекта (никаких внешних переменных)
-// 10) В методах getTargetMonth и getStatusIncome исправить переменные, все значения получаем от нашего объекта appData
-// 11) Вызвать все необходимые методы после объекта, чтобы корректно считались все данные (порядок очень важен).
-// 12) В консоль вывести: 
-
-//     — Расходы за месяц
-//     — За какой период будет достигнута цель (в месяцах)
-//     — Уровень дохода
-
-// Все остальное почистить в программе у нас всего две переменных money и appData
-// И две функции start и возможно isNumber
-// 13) Используя цикл for in для объекта (appData), вывести в консоль сообщение "Наша программа включает в себя данные: " (вывести все свойства и значения)
-// 14) Проверить, чтобы все работало и не было ошибок в консоли
