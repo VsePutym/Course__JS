@@ -35,34 +35,42 @@ let appData = {
         if (confirm('do you have an additional source of income?')) {
             let itemIncome,
                 cashIncome;
-            do {
-                itemIncome = prompt('what is your additional income?');
-            } while (isNumber(itemIncome));
 
+                itemIncome = prompt('what is your additional income?');
+                    while (isNumber(itemIncome) || itemIncome === null || itemIncome === ''){
+                        itemIncome = prompt('what is your additional income?');
+                    }
             do {
                 cashIncome = prompt('how much do you make a month?', );
             } while (!isNumber(cashIncome));
-            appData.income[itemIncome] = cashIncome;
+            appData.income[itemIncome.trim()] = cashIncome;
+            console.log(appData.income);
         }
         
         let expenses = prompt('Your possible expenses for the billing period, separate with a space', );
-        appData.addExpenses = expenses.toLowerCase().split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1));
+        if(expenses.length > 1){
+            appData.addExpenses = expenses.toLowerCase().split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1));
+        }
+        
 
         appData.deposit = confirm('Do you have a bank deposit?'); {
             appData.getInfoDeposit();
         }
 
         for (let i = 0; i < 2; i++) {
+            
             let key,
                 cost;
-            do {
+
+            key = prompt('Enter the required expense item');
+            while (isNumber(key) || key === null || key === ''){
                 key = prompt('Enter the required expense item');
-            } while (isNumber(key));
+            }
             do {
                 cost = prompt('How much will it cost?');
-            } while (!isNumber(cost));
+            } while (!isNumber(cost) || cost === null || cost === '');
             cost = Number(cost);
-            appData.expenses[key] = cost;
+            appData.expenses[key.trim()] = cost;
         }
     },
     getExpensesMonth: function () { //? сумирует обязательные расходы
