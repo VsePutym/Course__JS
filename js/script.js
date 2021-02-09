@@ -1,8 +1,33 @@
 'use strict';
 
-let isNumber = function (n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-};
+let data = document.querySelector('.data'),
+    result = document.querySelector('.result'),
+    buttonStart = document.getElementById('start'),
+    incomePlus = data.getElementsByTagName('button'),
+    expensesPlus = data.getElementsByTagName('button')[1],
+    checkbox = data.querySelector('#deposit-check'),
+    additional = data.querySelectorAll('.additional_expenses-item'),
+    valueBudgetDay = result.getElementsByClassName('budget_day-value'),
+    valueExpensesMonth = result.getElementsByClassName('expenses_month-value'),
+    valueAdditionalIncome = result.getElementsByClassName('additional_income-value'),
+    valueAdditionalExpenses = result.getElementsByClassName('additional_expenses-value'),
+    valueIncomePeriod = result.getElementsByClassName('income_period-value'),
+    valueTargetMonth = result.getElementsByClassName('target_month-value'),
+    valueBudgetMonth = result.querySelector('.budget_month-value'),
+    inputMonthSum = data.querySelector('.salary-amount'),
+    additionalIncomeName = data.querySelector('.income-title'),
+    additionalIncomeSum = data.querySelector('.income-amount'),
+    possibleIncome = data.querySelector('.additional_income-item'),
+    possibleIncome2 = data.querySelectorAll('.additional_income-item')[1],
+    obligatoryExpensesName = data.querySelector('.expenses-title'),
+    obligatoryExpensesSum = data.querySelector('.expenses-amount'),
+    possibleCosts = data.querySelector('.additional_expenses-item'),
+    target = data.querySelector('.target-amount'),
+    calculationPeriod = data.querySelector('.period-select');
+    
+    let isNumber = function (n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    };
 
 let money,
     start = function () {
@@ -45,14 +70,14 @@ let appData = {
             } while (!isNumber(cashIncome));
             appData.income[itemIncome] = cashIncome;
         }
-        
+
         let expenses;
         expenses = prompt('Your possible expenses for the billing period, separate with a space');
         if (expenses) {
             expenses = expenses.toLowerCase().split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1));
             appData.addExpenses = expenses.join(', ');
         }
-        
+
         appData.deposit = confirm('Do you have a bank deposit?'); {
             appData.getInfoDeposit();
         }
@@ -105,7 +130,7 @@ let appData = {
             console.log('your day budget ' + Math.ceil(appData.budgetDay));
             console.log('your budget for a month ' + appData.budgetMonth);
             console.log('your monthly expense ' + appData.expensesMonth);
-            console.log('Your possible expenses for the billing period. ' + appData.addExpenses.join(', '));
+            console.log('Your possible expenses for the billing period. ' + appData.addExpenses);
             console.log('budget target achieved in ' + Math.ceil(appData.targetMonth));
         }
     },
@@ -133,6 +158,7 @@ appData.getBudget();
 appData.getStatusIncome();
 appData.getTargetMonth(appData.budgetMonth, appData.dayInMonth, appData.mission, appData.budgetMonth);
 appData.targetAchieved();
+
 for (let key in appData) {
     console.log('key:' + key + ' value:' + appData[key]);
 }
