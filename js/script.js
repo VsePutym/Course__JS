@@ -29,10 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
         range = data.querySelector('.period-select'),
         allinputs = document.querySelectorAll("input[type='text']");
 
-
-
-
-
     let isNumber = function (n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     };
@@ -54,14 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
         percentDeposit: 0,
         moneyDeposit: 0,
 
-        showBudget: function () { // TODO Ключ 
-            if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
-                appData.budget = +inputMonthSum.value;
-                appData.start();
-            } else {
-                alert('not a number');
-            }
-        },
         start: function () {
             this.getExpenses(); //? Отправляет со  страницы данные обязательного расхода пользователя в Data
             this.getIncome(); //! отправляет со страницы дополнительный доход пользователя в Data
@@ -72,6 +60,17 @@ document.addEventListener('DOMContentLoaded', function () {
             this.getAddExpenses(); //! Возможные расходы
             this.getAddIncome(); //? Дополнительный доход
             this.showResult(); //* Показываем результат
+
+            buttonCancel.style.display = 'block';
+            buttonStart.style.display = 'none';
+
+            let inputBlock = function () { //! импуты блокированны
+                allinputs = document.querySelectorAll("input[type='text']");
+                allinputs.forEach(function (items) {
+                    items.setAttribute("disabled", true);
+                });
+            };
+            inputBlock();
         },
         showResult: function () {
             valueBudgetMonth.value = this.budgetMonth;
@@ -168,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 periodAmount.innerHTML = range.value;
             }
         },
-        reset: function () {
+        reset: function () { //? сброс appData
             this.targetMonth = 0,
                 this.dayInMonth = 30,
                 this.expensesMonth = 0,
@@ -183,55 +182,76 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.deposit = false,
                 this.percentDeposit = 0,
                 this.moneyDeposit = 0;
+
+            buttonCancel.style.display = 'none';
+            buttonStart.style.display = 'block';
+
+            let clearInput = function () { //! импуты очистка
+                allinputs.forEach(function (items) {
+                    items.value = '';
+                });
+            };
+
+            let inputUnblock = function () { //! импуты разблокированные
+                allinputs = document.querySelectorAll("input[type='text']");
+                allinputs.forEach(function (items) {
+                    items.removeAttribute("disabled");
+                });
+            };
+
+            for (let i = 0; i < expensesItems.length; i++) {
+                expensesItems[0].nextElementSibling.remove();
+                expensesItems = data.querySelectorAll('.expenses-items');
+                if (expensesItems.length === 3) {
+                    expensesPlus.style.display = 'none';
+                } else {
+                    expensesPlus.style.display = 'block';
+                }
+            }
+
+            for (let i = 0; i < incomeItems.length; i++) {
+                incomeItems[0].nextElementSibling.remove();
+                incomeItems = data.querySelectorAll('.income-items');
+                if (incomeItems.length === 3) {
+                    incomePlus.style.display = 'none';
+                } else {
+                    incomePlus.style.display = 'block';
+                }
+            }
+
+            range.value = 1;
+
+            this.getValueRange();
+            clearInput();
+            inputUnblock();
+        },
+        getKeyStart: function () { // TODO Ключ 
+            if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
+                appData.budget = +inputMonthSum.value;
+                this.start();
+            } else {
+                alert('not a number');
+            }
         }
     };
 
-    let inputBlock = function () {
-        allinputs = document.querySelectorAll("input[type='text']");
-        allinputs.forEach(function (items) {
-            items.setAttribute("disabled", true);
-        });
-    };
-
-    let inputUnblock = function () {
-        allinputs = document.querySelectorAll("input[type='text']");
-        allinputs.forEach(function (items) {
-            items.removeAttribute("disabled");
-        });
-    };
-
-    let clearInput = function () {
-        allinputs.forEach(function (items) {
-            items.value = '';
-        });
-    };
-
-    buttonStart.addEventListener('click', function () {
-        appData.showBudget();
-        inputBlock();
-        buttonCancel.style.display = 'block';
-        buttonStart.style.display = 'none';
-
+    buttonStart.addEventListener('click', function () { //? слушаем кнопку старт
+        appData.getKeyStart();
     });
 
-    buttonCancel.addEventListener('click', function () {
-        clearInput();
+    buttonCancel.addEventListener('click', function () { //? слушаем кнопку сброс
         appData.reset();
-        inputUnblock();
-        appData.start();
-        buttonCancel.style.display = 'none';
-        buttonStart.style.display = 'block';
     });
 
     expensesPlus.addEventListener('click', appData.addExpensesBlock);
     incomePlus.addEventListener('click', appData.addIncomeBlock);
-    range.addEventListener('change', appData.getValueRange);   
-    
+    range.addEventListener('change', appData.getValueRange);
+
     // let getlanguage = function(){
     //     allinputs.forEach(function (items) {    //! Проверяем инпуты на ввод русских букв, пока не работает
     //         items.value = items.value.replace(/^[^а-яё]+$/ig.test(allinputs), '');
     //     });
     // };
     //     allinputs = document.querySelectorAll("input[type='text']").value;
-    //     allinputs.addEventListener('focus', getlanguage);
+    //     allinputs.addEventListener('input', getlanguage);
 });
