@@ -167,24 +167,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 periodAmount.innerHTML = range.value;
             }
         },
+        getInfoDeposit: function () {
+            if (this.deposit) {
+                do {
+                    this.percentDeposit = prompt('What is the annual percentage?', 10);
+                } while (isNumber(this.percentDeposit) || this.percentDeposit === '' || this.percentDeposit === null);
+                do {
+                    this.moneyDeposit = prompt('How much is pledged?', 10000);
+                } while (isNumber(this.moneyDeposit) || this.moneyDeposit === '' ||
+                    this.moneyDeposit === ' ' || this.moneyDeposit === null);
+            }
+        },
         reset: function () { //? сброс appData
-            this.targetMonth = 0,
-                this.dayInMonth = 30,
-                this.expensesMonth = 0,
-                this.budgetMonth = 0,
-                this.budgetDay = 0,
-                this.budget = 0,
-                this.income = {}, //* доп. доходы.
-                this.incomeMonth = 0,
-                this.addIncome = [], //? тут мы будем перечислять дополнительные доходы
-                this.expenses = {}, //!содержит доп. расходы
-                this.addExpenses = [], //** массив с возможными расходами
-                this.deposit = false,
-                this.percentDeposit = 0,
+            this.targetMonth = 0;
+                this.dayInMonth = 30;
+                this.expensesMonth = 0;
+                this.budgetMonth = 0;
+                this.budgetDay = 0;
+                this.budget = 0;
+                this.income = {}; //* доп. доходы.
+                this.incomeMonth = 0;
+                this.addIncome = []; //? тут мы будем перечислять дополнительные доходы
+                this.expenses = {}; //!содержит доп. расходы
+                this.addExpenses = []; //** массив с возможными расходами
+                this.deposit = false;
+                this.percentDeposit = 0;
                 this.moneyDeposit = 0;
 
             buttonCancel.style.display = 'none';
             buttonStart.style.display = 'block';
+            checkBox.checked = false;
 
             let clearInput = function () { //! импуты очистка
                 allinputs.forEach(function (items) {
@@ -243,6 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
         appData.reset();
     });
 
+    // checkBox.addEventListener('checked', appData.getInfoDeposit);
     expensesPlus.addEventListener('click', appData.addExpensesBlock);
     incomePlus.addEventListener('click', appData.addIncomeBlock);
     range.addEventListener('change', appData.getValueRange);
