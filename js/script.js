@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     AppData.prototype.getIncome = function () { //! отправляет со страницы дополнительный доход пользователя в Data
-        incomeItems = data.querySelectorAll('.income-items');
+        incomeItems = document.querySelectorAll('.income-items');
         const _this = this;
         incomeItems.forEach(function (item) {
             let incomeName = item.querySelector('.income-title').value;
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 _this.income[incomeName] = incomeSum;
             }
             for (let key in _this.income) {
-                this.incomeMonth += parseFloat(_this.income[key]);
+                _this.incomeMonth += parseFloat(_this.income[key]);
             }
         });
     };
@@ -239,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if(expensesItems[i].localName === 'div'){
                 expensesItems[i].remove();
             }
-            expensesPlus.style.display = 'block';
         }
 
         incomeItems = data.querySelectorAll('.income-items');
@@ -247,11 +246,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if(incomeItems[i].localName === 'div'){
                 incomeItems[i].remove();
             }
-            incomePlus.style.display = 'block';
         }
-
+        expensesPlus.style.display = 'block';
+        incomePlus.style.display = 'block';
         range.value = 1;
-
         this.getValueRange();
         clearInput();
         inputUnblock();
@@ -260,7 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
     AppData.prototype.getKeyStart = function () { // TODO Ключ 
         if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
             this.start();
-
+            incomePlus.style.display = 'none';
+            expensesPlus.style.display = 'none';
         } else {
             alert('not a number');
         }
