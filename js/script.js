@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     AppData.prototype.start = function () {
+        this.budget = +inputMonthSum.value;
         this.getExpenses(); //? Отправляет со  страницы данные обязательного расхода пользователя в Data
         this.getIncome(); //! отправляет со страницы дополнительный доход пользователя в Data
         this.getExpensesMonth(); //? суммирует обязательные расходы
@@ -76,11 +77,11 @@ document.addEventListener('DOMContentLoaded', function () {
     AppData.prototype.showResult = function () {
         const _this = this;
         valueBudgetMonth.value = this.budgetMonth;
-        valueBudgetDay.value = Math.ceil(appData.budgetDay);
+        valueBudgetDay.value = Math.ceil(this.budgetDay);
         valueExpensesMonth.value = this.expensesMonth;
         valueAdditionalExpenses.value = this.addExpenses.join(', ');
         additionalIncomeValue.value = this.addIncome.join(', ');
-        valueTargetMonth.value = Math.ceil(appData.targetMonth);
+        valueTargetMonth.value = Math.ceil(this.targetMonth);
         valueIncomePeriod.value = this.calcSavedMoney();
         range.addEventListener('change', function(){
             valueIncomePeriod.value = _this.calcSavedMoney();
@@ -130,8 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (incomeName !== '' && incomeSum !== '') {
                 _this.income[incomeName] = incomeSum;
             }
-            for (let key in appData.income) {
-                this.incomeMonth += parseFloat(appData.income[key]);
+            for (let key in _this.income) {
+                this.incomeMonth += parseFloat(_this.income[key]);
             }
         });
     };
@@ -260,10 +261,10 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     AppData.prototype.getKeyStart = function () { // TODO Ключ 
-        const _this = this;
+        console.log(this);
         if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
-            _this.budget = +inputMonthSum.value;
             this.start();
+            
         } else {
             alert('not a number');
         }
@@ -271,15 +272,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const appData = new AppData();
     AppData.prototype.eventListener = function () {
-        const _this = this;
-        buttonStart.addEventListener('click', function () { //? слушаем кнопку старт
-            _this.getKeyStart();
-        });
-
-        buttonCancel.addEventListener('click', function () { //? слушаем кнопку сброс
-            const _this = this;
-            _this.reset();
-        });
+        buttonStart.addEventListener('click',  this.getKeyStart.bind(this)); //? слушаем кнопку старт
+        buttonCancel.addEventListener('click',  this.reset.bind(this)); //? слушаем кнопку сброс
 
         // checkBox.addEventListener('change', appData.getInfoDeposit);
         expensesPlus.addEventListener('click', this.addExpensesBlock);
@@ -295,7 +289,5 @@ document.addEventListener('DOMContentLoaded', function () {
         //     allinputs.addEventListener('input', getlanguage);
     };
 
-
-
-    AppData.prototype.eventListener();
+    appData.eventListener();
 });
