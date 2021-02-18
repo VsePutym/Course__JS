@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
         additionalIncomeValue.value = this.addIncome.join(', ');
         valueTargetMonth.value = Math.ceil(this.targetMonth);
         valueIncomePeriod.value = this.calcSavedMoney();
-        range.addEventListener('change', function(){
+        range.addEventListener('change', function () {
             valueIncomePeriod.value = _this.calcSavedMoney();
         });
     };
@@ -236,21 +236,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         expensesItems = document.querySelectorAll('.expenses-items');
         for (let i = 1; i < expensesItems.length; i++) {
-            expensesItems[0].nextElementSibling.remove();
-            if (expensesItems[i].length === 3) {
-                expensesPlus.style.display = 'none';
-            } else {
-                expensesPlus.style.display = 'block';
+            if(expensesItems[i].localName === 'div'){
+                expensesItems[i].remove();
             }
+            expensesPlus.style.display = 'block';
         }
+
         incomeItems = data.querySelectorAll('.income-items');
         for (let i = 1; i < incomeItems.length; i++) {
-            incomeItems[0].nextElementSibling.remove();
-            if (incomeItems[i].length === 3) {
-                incomePlus.style.display = 'none';
-            } else {
-                incomePlus.style.display = 'block';
+            if(incomeItems[i].localName === 'div'){
+                incomeItems[i].remove();
             }
+            incomePlus.style.display = 'block';
         }
 
         range.value = 1;
@@ -261,10 +258,9 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     AppData.prototype.getKeyStart = function () { // TODO Ключ 
-        console.log(this);
         if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
             this.start();
-            
+
         } else {
             alert('not a number');
         }
@@ -272,8 +268,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const appData = new AppData();
     AppData.prototype.eventListener = function () {
-        buttonStart.addEventListener('click',  this.getKeyStart.bind(this)); //? слушаем кнопку старт
-        buttonCancel.addEventListener('click',  this.reset.bind(this)); //? слушаем кнопку сброс
+        buttonStart.addEventListener('click', this.getKeyStart.bind(this)); //? слушаем кнопку старт
+        buttonCancel.addEventListener('click', this.reset.bind(this)); //? слушаем кнопку сброс
 
         // checkBox.addEventListener('change', appData.getInfoDeposit);
         expensesPlus.addEventListener('click', this.addExpensesBlock);
