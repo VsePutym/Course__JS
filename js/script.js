@@ -52,6 +52,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     AppData.prototype.start = function () {
         this.budget = +inputMonthSum.value;
+
+        expensesPlus.removeEventListener('click', this.addExpensesBlock);
+        incomePlus.removeEventListener('click', this.addIncomeBlock);
+
         this.getExpenses(); //? Отправляет со  страницы данные обязательного расхода пользователя в Data
         this.getIncome(); //! отправляет со страницы дополнительный доход пользователя в Data
         this.getExpensesMonth(); //? суммирует обязательные расходы
@@ -236,17 +240,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         expensesItems = document.querySelectorAll('.expenses-items');
         for (let i = 1; i < expensesItems.length; i++) {
-            if(expensesItems[i].localName === 'div'){
+            if (expensesItems[i].localName === 'div') {
                 expensesItems[i].remove();
             }
         }
 
         incomeItems = data.querySelectorAll('.income-items');
         for (let i = 1; i < incomeItems.length; i++) {
-            if(incomeItems[i].localName === 'div'){
+            if (incomeItems[i].localName === 'div') {
                 incomeItems[i].remove();
             }
         }
+        appData.eventListener();
         expensesPlus.style.display = 'block';
         incomePlus.style.display = 'block';
         range.value = 1;
@@ -258,8 +263,6 @@ document.addEventListener('DOMContentLoaded', function () {
     AppData.prototype.getKeyStart = function () { // TODO Ключ 
         if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
             this.start();
-            incomePlus.style.display = 'none';
-            expensesPlus.style.display = 'none';
         } else {
             alert('not a number');
         }
@@ -269,8 +272,6 @@ document.addEventListener('DOMContentLoaded', function () {
     AppData.prototype.eventListener = function () {
         buttonStart.addEventListener('click', this.getKeyStart.bind(this)); //? слушаем кнопку старт
         buttonCancel.addEventListener('click', this.reset.bind(this)); //? слушаем кнопку сброс
-
-        // checkBox.addEventListener('change', appData.getInfoDeposit);
         expensesPlus.addEventListener('click', this.addExpensesBlock);
         incomePlus.addEventListener('click', this.addIncomeBlock);
         range.addEventListener('change', this.getValueRange);
@@ -280,9 +281,6 @@ document.addEventListener('DOMContentLoaded', function () {
         //         items.value = items.value.replace(/^[^а-яё]+$/ig.test(allinputs), '');
         //     });
         // };
-        //     allinputs = document.querySelectorAll("input[type='text']").value;
-        //     allinputs.addEventListener('input', getlanguage);
     };
-
     appData.eventListener();
 });
