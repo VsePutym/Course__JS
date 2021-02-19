@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
     let data = document.querySelector('.data'),
@@ -223,14 +223,14 @@ document.addEventListener('DOMContentLoaded', function () {
             incomePlus.removeAttribute("disabled");
 
             const clearInput = () => { //! импуты очистка
-                allinputs.forEach(function (items) {
+                allinputs.forEach((items) => {
                     items.value = '';
                 });
             };
 
             const inputUnblock = () => { //! импуты разблокированные
                 allinputs = document.querySelectorAll("input[type='text']");
-                allinputs.forEach(function (items) {
+                allinputs.forEach((items) => {
                     items.removeAttribute("disabled");
                 });
             };
@@ -276,8 +276,8 @@ document.addEventListener('DOMContentLoaded', function () {
             expensesPlus.addEventListener('click', this.addExpensesBlock);
             incomePlus.addEventListener('click', this.addIncomeBlock);
             range.addEventListener('change', this.getValueRange);
-            // let getlanguage = function(){
-            //     allinputs.forEach(function (items) {    //! Проверяем инпуты на ввод русских букв, пока не работает
+            // let getlanguage = () => {
+            //     allinputs.forEach ((items) => {    //! Проверяем инпуты на ввод русских букв, пока не работает
             //         items.value = items.value.replace(/^[^а-яё]+$/ig.test(allinputs), '');
             //     });
             // };
