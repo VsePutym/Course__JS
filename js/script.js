@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         incomePlus = btnPlus[0],
         expensesPlus = btnPlus[1],
         checkBox = data.querySelector('#deposit-check'),
+        depositBank = data.querySelector('.deposit-bank'),
+        depositAmount = data.querySelector('.deposit-amount'),
+        depositPercent = data.querySelector('.deposit-percent'),
         additional = data.querySelectorAll('.additional_expenses-item'),
         valueBudgetDay = result.getElementsByClassName('result-total')[1],
         valueExpensesMonth = result.getElementsByClassName('result-total')[2],
@@ -56,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.getExpenses(); //? Отправляет со  страницы данные обязательного расхода пользователя в Data
             this.getIncome(); //! отправляет со страницы дополнительный доход пользователя в Data
             this.getExpensesMonth(); //? суммирует обязательные расходы
+            this.getInfoDeposit();
             this.getBudget(); //!вычисляем бюджет на месяц
             this.getBudgetDay(); //? Получаем дневной бюджет
             this.getTargetMonth(); //* Высчитываем за сколько накопим
@@ -63,10 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
             this.getAddIncome(); //? Дополнительный доход
             this.showResult(); //* Показываем результат
 
+            depositBank.setAttribute('disabled', true);
             buttonCancel.style.display = 'block';
             buttonStart.style.display = 'none';
             expensesPlus.setAttribute("disabled", true);
             incomePlus.setAttribute("disabled", true);
+            checkBox.setAttribute("disabled", true);
 
             range.addEventListener('change', () => {
                 valueIncomePeriod.value = this.calcSavedMoney();
@@ -102,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        addIncomeBlock (){ //? Дополнительные доходы button +
+        addIncomeBlock() { //? Дополнительные доходы button +
             const cloneIncomeItem = incomeItems[0].cloneNode(true);
             cloneIncomeItem.children[0].value = '';
             cloneIncomeItem.children[1].value = '';
@@ -113,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        getExpenses (){ //? Отправляет  данные обязательного расхода пользователя в Data
+        getExpenses() { //? Отправляет  данные обязательного расхода пользователя в Data
             expensesItems = data.querySelectorAll('.expenses-items');
             expensesItems.forEach((item) => {
                 const itemExpenses = item.querySelector('.expenses-title').value;
@@ -124,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        getIncome (){ //! отправляет со страницы дополнительный доход пользователя в Data
+        getIncome() { //! отправляет со страницы дополнительный доход пользователя в Data
             incomeItems = document.querySelectorAll('.income-items');
             incomeItems.forEach((item) => {
                 const incomeName = item.querySelector('.income-title').value;
@@ -157,14 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-       getExpensesMonth() { //? суммирует обязательные расходы
+        getExpensesMonth() { //? суммирует обязательные расходы
             for (const key in this.expenses) {
                 this.expensesMonth += parseFloat(this.expenses[key]);
             }
         }
 
         getBudget() { //!вычисляем бюджет на месяц
-            this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+            const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+            this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
             return this.budgetMonth;
         }
 
@@ -182,25 +189,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return this.budgetMonth * range.value;
         }
 
-        getValueRange(){ //? обновляет данные чисел range
-            if (range.value) {
-                periodAmount.innerHTML = range.value;
-            }
+        returnLangvich(){
+            allinputs.forEach ((items) => {    //! Проверяем инпуты на ввод русских букв, пока не работает
+                items.value = items.value.replace(/^[^а-яё]+$/ig, '');
+                alert('только ru');
+            });
         }
 
-        getInfoDeposit() {
-            if (this.deposit) {
-                do {
-                    this.percentDeposit = prompt('What is the annual percentage?', 10);
-                } while (isNumber(this.percentDeposit) || this.percentDeposit === '' || this.percentDeposit === null);
-                do {
-                    this.moneyDeposit = prompt('How much is pledged?', 10000);
-                } while (isNumber(this.moneyDeposit) || this.moneyDeposit === '' ||
-                    this.moneyDeposit === ' ' || this.moneyDeposit === null);
-            }
-        }
-
-        reset () { //? сброс appData
+        reset() { //? сброс appData
             this.targetMonth = 0;
             this.dayInMonth = 30;
             this.expensesMonth = 0;
@@ -216,11 +212,23 @@ document.addEventListener('DOMContentLoaded', () => {
             this.percentDeposit = 0;
             this.moneyDeposit = 0;
 
+            depositAmount.removeEventListener('input', () => {
+                if (!isNumber(+depositAmount.value) && depositAmount.value !== '') {
+                    alert('введите сумму');
+                    depositAmount.value = '';
+                }
+            });
+
+            depositBank.removeAttribute('disabled');
+            depositBank.style.display = 'none';
+            depositPercent.style.display = 'none';
+            checkBox.checked = false;
+            depositBank.value = '';
             buttonCancel.style.display = 'none';
             buttonStart.style.display = 'block';
-            checkBox.checked = false;
             expensesPlus.removeAttribute("disabled");
             incomePlus.removeAttribute("disabled");
+            checkBox.removeAttribute("disabled");
 
             const clearInput = () => { //! импуты очистка
                 allinputs.forEach((items) => {
@@ -253,6 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueIncomePeriod.value = this.calcSavedMoney();
             });
 
+
+            depositAmount.style.display = 'none';
             expensesPlus.style.display = 'block';
             incomePlus.style.display = 'block';
             range.value = 1;
@@ -261,13 +271,76 @@ document.addEventListener('DOMContentLoaded', () => {
             inputUnblock();
         }
 
-        getKeyStart() { // TODO Ключ 
-            if (isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
-                this.start();
-            } else {
-                alert('not a number');
+        getValueRange() { //? обновляет данные чисел range
+            if (range.value) {
+                periodAmount.innerHTML = range.value;
             }
         }
+
+        getInfoDeposit() {
+            if (this.deposit) {
+                this.percentDeposit = depositPercent.value;
+                this.moneyDeposit = depositAmount.value;
+            }
+        }
+
+        changePercent() {
+            let valueSelect = this.value;
+            if (valueSelect === 'other') {
+                depositPercent.style.display = 'block';
+                valueSelect = depositPercent.value;
+                depositPercent.addEventListener('input', () => {
+                    if (isNumber(+depositPercent.value) && +depositPercent.value >= 1 &&
+                        +depositPercent.value <= 100) {
+                        valueSelect = depositPercent.value;
+                    } else {
+                        alert('Возможный процент должен быть от 1 до 100');
+                        depositPercent.value = '';
+                    }
+                });
+            } else {
+                depositPercent.value = +valueSelect;
+            }
+            depositAmount.addEventListener('input', () => {
+                if (!isNumber(+depositAmount.value) && depositAmount.value !== '') {
+                    alert('Ввести можно только число');
+                    depositAmount.value = '';
+                }
+            });
+        }
+
+
+        depositHandler() { //? Проверка стоит ли галочка на checkbox
+            if (checkBox.checked) {
+                depositBank.style.display = 'inline-block';
+                depositAmount.style.display = 'inline-block';
+                depositBank.addEventListener('change', this.changePercent);
+                this.deposit = true;
+            } else {
+                depositBank.style.display = 'none';
+                depositAmount.style.display = 'none';
+                depositAmount.value = '';
+                depositBank.value = '';
+                this.deposit = false;
+                depositBank.removeEventListener('change', this.changePercent);
+            }
+        }
+
+        getKeyStart() { // TODO Ключ 
+            if (checkBox.checked === false && isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
+                this.start();
+            } else if (checkBox.checked === true && isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
+                if(depositBank.value === '' || depositAmount.value === ''){
+                    alert('В поле сумма введено не число, либо пустая строка, также убедитесь что в поле "Депозит" заполнены данные, либо уберите галочку');
+                }else{
+                    buttonStart.removeAttribute("disabled");
+                    this.start();
+                }
+            } else {
+                alert('В поле сумма введено не число, либо пустая строка, также убедитесь что в поле "Депозит" заполнены данные, либо уберите галочку');
+            }
+        }
+
 
         eventListener() {
 
@@ -276,11 +349,8 @@ document.addEventListener('DOMContentLoaded', () => {
             expensesPlus.addEventListener('click', this.addExpensesBlock);
             incomePlus.addEventListener('click', this.addIncomeBlock);
             range.addEventListener('change', this.getValueRange);
-            // let getlanguage = () => {
-            //     allinputs.forEach ((items) => {    //! Проверяем инпуты на ввод русских букв, пока не работает
-            //         items.value = items.value.replace(/^[^а-яё]+$/ig.test(allinputs), '');
-            //     });
-            // };
+            checkBox.addEventListener('change', this.depositHandler.bind(this));
+            allinputs.addEventListener('input', this.returnLangvich);
         }
     }
 
