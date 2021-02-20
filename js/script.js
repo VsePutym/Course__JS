@@ -189,12 +189,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return this.budgetMonth * range.value;
         }
 
-        returnLangvich(){
-            allinputs.forEach ((items) => {    //! Проверяем инпуты на ввод русских букв, пока не работает
-                items.value = items.value.replace(/^[^а-яё]+$/ig, '');
-                alert('только ru');
-            });
-        }
+        // returnLang(){
+        //     allinputs.forEach ((items) => {    //! Проверяем инпуты на ввод русских букв, пока не работает
+        //         items.value = items.value.replace(/^[^а-яё]+$/ig, '');
+        //         alert('только ru');
+        //     });
+        // }
 
         reset() { //? сброс appData
             this.targetMonth = 0;
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
             incomePlus.addEventListener('click', this.addIncomeBlock);
             range.addEventListener('change', this.getValueRange);
             checkBox.addEventListener('change', this.depositHandler.bind(this));
-            allinputs.addEventListener('input', this.returnLangvich);
+            // allinputs.addEventListener('input', this.returnLang); //! слушаем инпуты, проверяем ввод, не работ. 
         }
     }
 
