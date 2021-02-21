@@ -138,10 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (incomeName !== '' && incomeSum !== '') {
                     this.income[incomeName] = incomeSum;
                 }
-                for (let key in this.income) {
-                    this.incomeMonth += parseFloat(this.income[key]);
-                }
             });
+            for (let key in this.income) {
+                this.incomeMonth += parseFloat(this.income[key]);
+            }
         }
 
         getAddExpenses() {
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         getBudget() { //!вычисляем бюджет на месяц
             const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
-            this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
+            this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + parseInt(monthDeposit);
             return this.budgetMonth;
         }
 
