@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (checkBox.checked === false && isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
                 this.start();
             } else if (checkBox.checked === true && isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
-                if(depositBank.value === '' || depositAmount.value === ''){
+                if(depositBank.value === '' || depositAmount.value === '' || depositPercent.value === ''){
                     alert('В поле сумма введено не число, либо пустая строка, также убедитесь что в поле "Депозит" заполнены данные, либо уберите галочку');
                 }else{
                     buttonStart.removeAttribute("disabled");
