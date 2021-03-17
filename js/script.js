@@ -1,3 +1,8 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-const */
+/* eslint-disable strict */
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
@@ -29,11 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
         target = data.querySelector('.target-amount'),
         periodAmount = data.querySelector('.period-amount'),
         range = data.querySelector('.period-select'),
-        allinputs = document.querySelectorAll("input[type='text']");
+        allinputs = document.querySelectorAll("input[type='text']"),
+        allInputsText = document.querySelectorAll("input[placeholder='Наименование']"),
+        allInputsSum = data.querySelectorAll("input[placeholder='Сумма']");
 
-    const isNumber = (n) => {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-    };
+
+
+
+    const isNumber = n => !isNaN(parseFloat(n)) && isFinite(n);
 
     class AppData {
         constructor() {
@@ -80,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const inputBlock = () => { //! импуты блокированны
                 allinputs = document.querySelectorAll("input[type='text']");
-                allinputs.forEach((items) => {
+                allinputs.forEach(items => {
                     items.setAttribute("disabled", true);
                 });
             };
@@ -121,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         getExpenses() { //? Отправляет  данные обязательного расхода пользователя в Data
             expensesItems = data.querySelectorAll('.expenses-items');
-            expensesItems.forEach((item) => {
+            expensesItems.forEach(item => {
                 const itemExpenses = item.querySelector('.expenses-title').value;
                 const cashExpenses = item.querySelector('.expenses-amount').value;
                 if (itemExpenses !== '' && cashExpenses !== '') {
@@ -132,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         getIncome() { //! отправляет со страницы дополнительный доход пользователя в Data
             incomeItems = document.querySelectorAll('.income-items');
-            incomeItems.forEach((item) => {
+            incomeItems.forEach(item => {
                 const incomeName = item.querySelector('.income-title').value;
                 const incomeSum = item.querySelector('.income-amount').value;
                 if (incomeName !== '' && incomeSum !== '') {
@@ -146,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         getAddExpenses() {
             const addExpenses = possibleCost.value.split(', '); //! Возможные расходы
-            addExpenses.forEach((item) => {
+            addExpenses.forEach(item => {
                 item = item.trim();
                 if (item !== '') {
                     this.addExpenses.push(item);
@@ -155,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         getAddIncome() {
-            possibleIncome.forEach((item) => { //? Дополнительный доход
+            possibleIncome.forEach(item => { //? Дополнительный доход
                 let itemValue = item.value.trim();
                 if (itemValue !== '') {
                     this.addIncome.push(itemValue);
@@ -189,12 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return this.budgetMonth * range.value;
         }
 
-        // returnLang(){
-        //     allinputs.forEach ((items) => {    //! Проверяем инпуты на ввод русских букв, пока не работает
-        //         items.value = items.value.replace(/^[^а-яё]+$/ig, '');
-        //         alert('только ru');
-        //     });
-        // }
 
         reset() { //? сброс appData
             this.targetMonth = 0;
@@ -231,14 +233,14 @@ document.addEventListener('DOMContentLoaded', () => {
             checkBox.removeAttribute("disabled");
 
             const clearInput = () => { //! импуты очистка
-                allinputs.forEach((items) => {
+                allinputs.forEach(items => {
                     items.value = '';
                 });
             };
 
             const inputUnblock = () => { //! импуты разблокированные
                 allinputs = document.querySelectorAll("input[type='text']");
-                allinputs.forEach((items) => {
+                allinputs.forEach(items => {
                     items.removeAttribute("disabled");
                 });
             };
@@ -326,13 +328,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        getKeyStart() { // TODO Ключ 
+        validFormName() {
+            allInputsText = data.querySelectorAll("input[placeholder='Наименование']");
+            allInputsText.forEach(items => { //! Проверяем инпуты на ввод русских букв
+                items.addEventListener('input', e => {
+                    const target = e.target;
+                    target.value = target.value.replace(/[^Аа-яЯёЁ\s\.\,]/g, '').replace(/^[\.\,]/g, '');
+                });
+            });
+        }
+
+        validFormSum() {
+            allInputsSum = data.querySelectorAll("input[placeholder='Сумма']");
+            allInputsSum.forEach(items => { //! Проверяем инпуты на ввод цифр
+                items.addEventListener('input', e => {
+                    const target = e.target;
+                    target.value = target.value.replace(/[^0-9]/g, '').trim();
+                });
+            });
+        }
+
+        getKeyStart() { // TODO Ключ
             if (checkBox.checked === false && isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
                 this.start();
             } else if (checkBox.checked === true && isNumber(inputMonthSum.value) && inputMonthSum.value !== "") {
-                if(depositBank.value === '' || depositAmount.value === '' || depositPercent.value === ''){
+                if (depositBank.value === '' || depositAmount.value === '' || depositPercent.value === '') {
                     alert('В поле сумма введено не число, либо пустая строка, также убедитесь что в поле "Депозит" заполнены данные, либо уберите галочку');
-                }else{
+                } else {
                     buttonStart.removeAttribute("disabled");
                     this.start();
                 }
@@ -346,11 +368,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             buttonStart.addEventListener('click', this.getKeyStart.bind(this)); //? слушаем кнопку старт
             buttonCancel.addEventListener('click', this.reset.bind(this)); //? слушаем кнопку сброс
-            expensesPlus.addEventListener('click', this.addExpensesBlock);
-            incomePlus.addEventListener('click', this.addIncomeBlock);
+            expensesPlus.addEventListener('click', () => {
+                this.addExpensesBlock();
+                this.validFormName();
+                this.validFormSum();
+            });
+            incomePlus.addEventListener('click', () => {
+                this.addIncomeBlock();
+                this.validFormName();
+                this.validFormSum();
+            });
+
+            allInputsText.forEach(items => { //! Проверяем инпуты на ввод русских букв
+                items.addEventListener('input', e => {
+                    const target = e.target;
+                    target.value = target.value.replace(/[^Аа-яЯёЁ\s\.\,]/g, '').replace(/^[\.\,]/g, '');
+                });
+            });
+
+            allInputsSum = data.querySelectorAll("input[placeholder='Сумма']");
+            allInputsSum.forEach(items => { //! Проверяем инпуты на ввод цифр
+                items.addEventListener('input', e => {
+                    const target = e.target;
+                    target.value = target.value.replace(/[^0-9]/g, '').trim();
+                });
+            });
+
             range.addEventListener('change', this.getValueRange);
             checkBox.addEventListener('change', this.depositHandler.bind(this));
-            // allinputs.addEventListener('input', this.returnLang); //! слушаем инпуты, проверяем ввод, не работ. 
         }
     }
 
